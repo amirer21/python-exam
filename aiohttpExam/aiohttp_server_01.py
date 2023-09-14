@@ -30,7 +30,13 @@ aiohttp는 다음과 같은 핸들러를 제공한다.
 GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
 여기서는 GET 요청을 처리하는 핸들러를 추가했다.
 '''
+# async  : 비동기 함수를 만들 때 사용하는 키워드이다.
+# await : 비동기 함수 안에서 비동기 함수를 호출할 때 사용하는 키워드이다.
+# await는 async 키워드가 붙은 함수 안에서만 사용할 수 있다.
+# 기능은 비동기 함수가 호출되면, 비동기 함수가 끝날 때까지 기다린다.
 
+# 비동기 함수는 호출되면, 이벤트 루프에 의해 실행된다.
+# 이벤트 루프란 이벤트를 받고, 처리하는 역할을 한다. 여기서 이벤트란 사용자의 요청이나, 파일의 입출력 등을 말한다.
 async def handle(request):
     return web.Response(text="Hello, this is the server!")
 
