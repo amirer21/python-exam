@@ -1,31 +1,31 @@
-# selenium
-# 동적 데이터 수집
+# 동적 데이터 수집 및 가공(selenium, pandas)
 
-# selenium 은 웹 브라우저를 제어하는 프레임워크
-# selenium으로 웹 브라우저에서 동적으로 데이터를 수집할 수 있다.
-# 수집한 데이터는 Pandas의 DataFrame 객체로 만들어서 데이터 분석에 사용할 수 있다.
-# 그리고 이 데이터는 csv 파일로 저장할 수 있다.
+# selenium 은 웹 브라우저를 제어하는 프레임워크이다.
+# 웹 브라우저에서 동적으로 데이터를 수집할 수 있다.
+# 그리고 웹 브라우저에서 수집한 데이터는 파이썬의 pandas 모듈을 사용하여 데이터를 가공할 수 있다.
+# pandas는 데이터를 가공하고, 분석하는데 사용하는 파이썬 라이브러리이다.
 
 
+## selenium 설치
 # pip install selenium
+## 크롬 드라이버 관리 모듈 설치
 # pip install webdriver-manager
 
+
+## 다음 예제는 쿠팡에서 식품 카테고리에서 상품명, 가격, 배송, URL을 수집하는 예제이다.
+## 그리고 이 데이터를 pandas의 DataFrame 객체로 만들어서 출력해보고, csv 파일로 저장해본다.
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 import pandas as pd
-import requests
-from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-
 
 """
 service의 구조는 selenium.webdriver.chrome.service.Service 클래스를 참고
 https://www.selenium.dev/selenium/docs/api/py/webdriver_chrome/selenium.webdriver.chrome.service.html
 executable_path는 이 클래스의 생성자의 인자로 들어가는데, 이는 chromedriver의 경로를 의미함
 """
-service = Service() 
-
+service = Service()
 options = webdriver.ChromeOptions() # ChromeOptions : 크롬 브라우저의 설정을 위한 객체
 driver = webdriver.Chrome(service=service, options=options) # Chrome() : 크롬 브라우저를 실행하기 위한 객체
 
@@ -38,7 +38,6 @@ productList = driver.find_element(By.ID, 'productList')
 lis = productList.find_elements(By.TAG_NAME, "li")
 #print(len(lis))   
 #print(lis)
-
 
 ## 상품명, 가격, 배송, URL 수집 배열 선언
 prd_name = []
@@ -66,13 +65,14 @@ pd.set_option('display.max_colwidth', 20)                 # 출력할 열의 너
 pd.set_option('display.unicode.east_asian_width', True)   # 유니코드 사용 너비 조정
 print(final)
 '''
+(출력된 내용에 상품명은 'ㅁ'로 수정하였음)
                      이름           가격                 Delivery                  URL
-0  ## 치킨 통닭 백숙용 (...        13,180   내일(금) 새벽 도착 보장.....   https://www.coup...
-1  ## 제로 블루라임 탄산...        17,030   내일(금) 도착 보장            https://www.coup...
-2  ## 연어훈제 슬라이스 (냉동...   22,390   내일(금) 새벽 도착 보장.....   https://www.coup...
-3  ## 미국 스윗 사파이어 포도...   24,520   내일(금) 새벽 도착 보장.....   https://www.coup...
-4  ## 영진 구론산 탄산 ...         28,280   내일(금) 도착 보장           https://www.coup...
-5  ## 어메이징 오트 바리스...      26,470    내일(금) 도착 보장            https://www.coup...
+0  ㅁㅁ 햇 꼬마사과 (13~17...      22,950   내일(일) 새벽 도착 보장.....    https://www.coup...
+1  ㅁㅁㅁㅁ 제로 블루라임 탄산...   17,030   내일(일) 도착 보장              https://www.coup...
+2  ㅁㅁㅁ 명작 2FL 분유 2...       56,700   내일(일) 도착 보장             https://www.coup...
+3  ㅁㅁ 산지직송 산채로 포장한...   26,200   모레(월) 새벽 도착 보장.....     https://www.coup...
+4  ㅁㅁ 현미밥, 130g, 24...        16,900   내일(일) 도착 보장            https://www.coup...
+5  ㅁㅁㅁ ㅁㅁ 오트 바리스...       25,920    내일(일) 도착 보장              https://www.coup...
 '''
 
 ## csv 파일로 저장

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Log Viewer</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+</head>
+<body>
+    <h1>Real-time Log Viewer</h1>
+    <ul id="log-list"></ul>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/log');
+
+        socket.on('log_update', function(msg) {
+            updateLog([msg.value]);
+        });
+
+        function updateLog(logData) {
+            // Update the log content on the page
+            var logList = $('#log-list');
+            var blinkColor = 'yellow';  // Choose the color you want to use for blinking
+            logList.empty(); // Clear existing content
+
+            logData.forEach(function(entry, index) {
+                // Create a list item with a unique ID
+                var listItem = $('<li>').attr('id', 'log-item-' + index).text(entry);
+                
+                // Append the list item to the log list
+                logList.append(listItem);
+
+                // Toggle background color with a blinking effect
+                listItem.css('background-color', blinkColor);
+                setTimeout(function() {
+                    listItem.css('background-color', '');
+                }, 500);  // Blinking interval in milliseconds
+            });
+        }
+    </script>
+</body>
+</html>

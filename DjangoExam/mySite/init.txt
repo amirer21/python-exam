@@ -1,0 +1,2 @@
+#장고 
+django-admin startproject Investar
